@@ -1,5 +1,12 @@
 """
 Графический интерфейс музыкального плеера на базе Tkinter и Pygame.
+Cначала нужно запустить player_GUI.py
+Инструкция:
+Нужно ввести в терминал (VS Code):
+1)python -m venv venv
+2)source venv/Scripts/activate
+3) pip install -r requirements.txt
+4)python player_gui.py
 """
 
 import os
@@ -13,8 +20,8 @@ from linked_list import Composition, PlayList
 class MusicPlayerApp:
     """Класс графического приложения музыкального плеера."""
 
-    def __init__(self, root: tk.Tk) -> None:
-        self.root = root
+    def __init__(self, master_root: tk.Tk) -> None:
+        self.root = master_root
         self.root.title("Музыкальный плеер (Кольцевой двусвязный список)")
         self.root.geometry("600x450")
         self.root.config(bg="#f0f0f0")
@@ -52,9 +59,6 @@ class MusicPlayerApp:
 
         control_frame = tk.Frame(self.root, bg="#f0f0f0")
         control_frame.pack(pady=15)
-        
-        btn_stop = tk.Button(control_frame, text="⏹ Стоп", width=15, command=self.stop_track)
-        btn_stop.grid(row=0, column=3, padx=5)
 
         btn_prev = tk.Button(control_frame, text="⏮ Предыдущий", width=15, command=self.prev_track)
         btn_prev.grid(row=0, column=0, padx=5)
@@ -64,6 +68,9 @@ class MusicPlayerApp:
 
         btn_next = tk.Button(control_frame, text="⏭ Следующий", width=15, command=self.next_track)
         btn_next.grid(row=0, column=2, padx=5)
+
+        btn_stop = tk.Button(control_frame, text="⏹ Стоп", width=15, command=self.stop_track)
+        btn_stop.grid(row=0, column=3, padx=5)
 
         self.status_label = tk.Label(
             self.root, text="Сейчас играет: нет", font=("Arial", 10, "italic"), bg="#f0f0f0"
@@ -75,7 +82,7 @@ class MusicPlayerApp:
         self.track_listbox.delete(0, tk.END)
         if len(self.playlist) == 0:
             return
-        
+
         current = self.playlist.first_item
         start = current
         while True:
@@ -143,7 +150,7 @@ class MusicPlayerApp:
                 pygame.mixer.music.play()
                 self.status_label.config(text=f"Сейчас играет: {current_track.title}")
                 self.refresh_listbox()
-            except pygame.error as e:
+            except pygame.error as e:  # pylint: disable=no-member
                 messagebox.showerror("Ошибка", f"Не удалось воспроизвести файл:\n{e}")
 
     def next_track(self) -> None:
@@ -158,7 +165,7 @@ class MusicPlayerApp:
                 pygame.mixer.music.play()
                 self.status_label.config(text=f"Сейчас играет: {current_track.title}")
                 self.refresh_listbox()
-            except pygame.error as e:
+            except pygame.error as e:  # pylint: disable=no-member
                 messagebox.showerror("Ошибка", f"{e}")
 
     def prev_track(self) -> None:
@@ -173,9 +180,9 @@ class MusicPlayerApp:
                 pygame.mixer.music.play()
                 self.status_label.config(text=f"Сейчас играет: {current_track.title}")
                 self.refresh_listbox()
-            except pygame.error as e:
+            except pygame.error as e:  # pylint: disable=no-member
                 messagebox.showerror("Ошибка", f"{e}")
-                
+
     def stop_track(self) -> None:
         """Остановка воспроизведения текущего трека."""
         pygame.mixer.music.stop()
