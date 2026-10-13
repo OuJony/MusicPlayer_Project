@@ -1,6 +1,6 @@
 """
 Модуль для реализации кольцевого двусвязного списка и музыкального плейлиста.
-Нужно запустить player_gui.py
+*Нужно запустить player_gui.py*
 """
 
 from typing import Any, Iterator, Optional
