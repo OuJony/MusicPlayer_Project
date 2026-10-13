@@ -1,17 +1,18 @@
 """
 Модуль для реализации кольцевого двусвязного списка и музыкального плейлиста.
+Нужно запустить player_gui.py
 """
 
 from typing import Any, Iterator, Optional
 
 
-class Composition:
+class Composition:  # pylint: disable=too-few-public-methods
     """Класс, представляющий музыкальную композицию."""
 
     def __init__(self, title: str, file_path: str) -> None:
         self.title = title
         self.file_path = file_path
-        self.data = title
+        self.data = title  # Поле для совместимости с тестами
 
     def __str__(self) -> str:
         return self.title
@@ -26,7 +27,6 @@ class LinkedListItem:
             self.data = track.data
         else:
             self.data = track
-            
         self._next: Optional['LinkedListItem'] = None
         self._previous: Optional['LinkedListItem'] = None
 
@@ -39,8 +39,8 @@ class LinkedListItem:
     def next_item(self, item: Optional['LinkedListItem']) -> None:
         """Сеттер для следующего элемента с автоматической связкой."""
         self._next = item
-        if item and item._previous != self:
-            item._previous = self
+        if item and item._previous != self:  # pylint: disable=protected-access
+            item._previous = self  # pylint: disable=protected-access
 
     @property
     def previous_item(self) -> Optional['LinkedListItem']:
@@ -51,8 +51,8 @@ class LinkedListItem:
     def previous_item(self, item: Optional['LinkedListItem']) -> None:
         """Сеттер для предыдущего элемента с автоматической связкой."""
         self._previous = item
-        if item and item._next != self:
-            item._next = self
+        if item and item._next != self:  # pylint: disable=protected-access
+            item._next = self  # pylint: disable=protected-access
 
 
 class LinkedList:
@@ -107,7 +107,6 @@ class LinkedList:
         """Проверка наличия элемента в списке."""
         if not self.first_item:
             return False
-        
         current = self.first_item
         while True:
             if current == item or current.track == item or getattr(current, 'data', None) == item:
@@ -287,7 +286,6 @@ class PlayList(LinkedList):
         node.track, node.previous_item.track = node.previous_item.track, node.track
         if hasattr(node, 'data') and hasattr(node.previous_item, 'data'):
             node.data, node.previous_item.data = node.previous_item.data, node.data
-            
         if self.current_item == node.previous_item:
             self.current_item = node
 
